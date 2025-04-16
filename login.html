@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول والتسجيل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+             background-color: (#1e7e34, rgba(40, 120, 235, 0.9));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+        
+        .container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .form-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            transition: all 0.6s ease-in-out;
+            flex-direction: column;
+        }
+        
+        .sign-in-container {
+            z-index: 2;
+        }
+        
+        .sign-up-container {
+            z-index: 1;
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        
+        .container.active .sign-in-container {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        
+        .container.active .sign-up-container {
+            transform: translateX(0);
+            opacity: 1;
+            z-index: 3;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 15px 0;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 4;
+        }
+        
+        .toggle {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            margin: 0 5px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle:hover {
+            opacity: 0.9;
+        }
+        
+        .social-container {
+            margin: 20px 0;
+            width: 100%;
+        }
+        
+        .social-title {
+            text-align: center;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .social-title::before,
+        .social-title::after {
+            content: "";
+            flex: 1;
+            background: #ddd;
+            height: 1px;
+            position: absolute;
+            top: 50%;
+            width: 30%;
+        }
+        
+        .social-title::before {
+            left: 0;
+        }
+        
+        .social-title::after {
+            right: 0;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-btn {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: 45%;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fb-btn {
+            background: #3b5998;
+            color: white;
+        }
+        
+        .google-btn {
+            background: #dd4b39;
+            color: white;
+        }
+        
+        .social-icon {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .forgot-password a {
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        .forgot-password a:hover {
+            color: #2575fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="toggle-container">
+            <button class="toggle" id="signInToggle">تسجيل الدخول</button>
+            <button class="toggle" id="signUpToggle">إنشاء حساب</button>
+        </div>
+        
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>تسجيل الدخول</h1>
+                <input type="email" placeholder="البريد الإلكتروني" required />
+                <input type="password" placeholder="كلمة المرور" required />
+                <button type="submit">تسجيل الدخول</button>
+                
+                <div class="forgot-password">
+                    <a href="#">هل نسيت كلمة المرور؟</a>
+                </div>
+                
+                <div class="social-container">
+                    <div class="social-title">أو سجل الدخول باستخدام</div>
+                    <div class="social-buttons">
+                        <button class="social-btn fb-btn" type="button">
+                            <i class="fab fa-facebook-f social-icon"></i>
+                            فيسبوك
+                        </button>
+                        <button class="social-btn google-btn" type="button">
+                            <i class="fab fa-google social-icon"></i>
+                            جوجل
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>إنشاء حساب</h1>
+                <input type="text" placeholder="الاسم الكامل" required />
+                <input type="email" placeholder="البريد الإلكتروني" required />
+                <input type="password" placeholder="كلمة المرور" required />
+                <button type="submit">إنشاء حساب</button>
+                
+                <div class="social-container">
+                    <div class="social-title">أو سجل باستخدام</div>
+                    <div class="social-buttons">
+                        <button class="social-btn fb-btn" type="button">
+                            <i class="fab fa-facebook-f social-icon"></i>
+                            فيسبوك
+                        </button>
+                        <button class="social-btn google-btn" type="button">
+                            <i class="fab fa-google social-icon"></i>
+                            جوجل
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const signInToggle = document.getElementById('signInToggle');
+        const signUpToggle = document.getElementById('signUpToggle');
+        const container = document.getElementById('container');
+        
+        signInToggle.addEventListener('click', () => {
+            container.classList.remove('active');
+        });
+        
+        signUpToggle.addEventListener('click', () => {
+            container.classList.add('active');
+        });
+        
+        // يمكنك إضافة وظائف تسجيل الدخول بالفيسبوك وجوجل هنا
+        document.querySelectorAll('.fb-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert('سيتم توجيهك إلى صفحة تسجيل الدخول عبر فيسبوك');
+                // window.location.href = 'رابط واجهة برمجة تطبيقات فيسبوك هنا';
+            });
+        });
+        
+        document.querySelectorAll('.google-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert('سيتم توجيهك إلى صفحة تسجيل الدخول عبر جوجل');
+                // window.location.href = 'رابط واجهة برمجة تطبيقات جوجل هنا';
+            });
+        });
+    </script>
+</body>
+</html>
